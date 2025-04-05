@@ -50,10 +50,10 @@ class Solution:
                 return memo[start_idx]
 
             for end_idx in range(start_idx + 1, n + 1):
-                word = s[start_idx:end_idx]
+                word = s[start_idx:end_idx] # word is a prefix of s. 
                 if word in word_set:
                     path.append(word)  # track current path (like yours)
-                    if dfs_backtrack(end_idx, path):
+                    if dfs_backtrack(end_idx, path): # end_idx = start_idx + len(edge)
                         memo[start_idx] = True
                         return True
                     path.pop()  # backtrack
@@ -62,3 +62,4 @@ class Solution:
             return False
 
         return dfs_backtrack(0, [])
+
