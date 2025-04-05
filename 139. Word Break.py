@@ -42,20 +42,23 @@ class Solution:
         n = len(s)
         memo = {}
 
-        def dfs(start_idx):
+        def dfs_backtrack(start_idx, path):
             if start_idx == n:
-                return True
+                return True  # valid segmentation
+            
             if start_idx in memo:
                 return memo[start_idx]
 
             for end_idx in range(start_idx + 1, n + 1):
                 word = s[start_idx:end_idx]
                 if word in word_set:
-                    if dfs(end_idx):
+                    path.append(word)  # track current path (like yours)
+                    if dfs_backtrack(end_idx, path):
                         memo[start_idx] = True
                         return True
+                    path.pop()  # backtrack
 
             memo[start_idx] = False
             return False
 
-        return dfs(0)
+        return dfs_backtrack(0, [])
