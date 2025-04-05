@@ -1,3 +1,5 @@
+## my original verions: however, it does not pass the time complexity. 
+
 class Solution:
     def wordBreak(self, s: str, wordDict: List[str]) -> bool:
         
@@ -29,3 +31,31 @@ class Solution:
         else:
             return False
         # return final_res
+
+
+### improved version using memoization:
+from typing import List
+
+class Solution:
+    def wordBreak(self, s: str, wordDict: List[str]) -> bool:
+        word_set = set(wordDict)
+        n = len(s)
+        memo = {}
+
+        def dfs(start_idx):
+            if start_idx == n:
+                return True
+            if start_idx in memo:
+                return memo[start_idx]
+
+            for end_idx in range(start_idx + 1, n + 1):
+                word = s[start_idx:end_idx]
+                if word in word_set:
+                    if dfs(end_idx):
+                        memo[start_idx] = True
+                        return True
+
+            memo[start_idx] = False
+            return False
+
+        return dfs(0)
