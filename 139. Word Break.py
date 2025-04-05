@@ -71,3 +71,40 @@ class Solution:
         8: True     # apple is breakable
         }
 
+### BEST version using memoization:
+from typing import List
+
+class Solution:
+    def wordBreak(self, s: str, wordDict: List[str]) -> bool:
+        if not s:
+            return False
+
+        word_set = set(wordDict)
+        n = len(s)
+        memo = {}
+        res = []
+
+        def dfs_backtrack(start_idx, path):
+            if start_idx == n:
+                joined = "".join(path)
+                if joined == s:
+                    res.append(joined)
+                    return True
+                return False
+
+            if start_idx in memo:
+                return memo[start_idx]
+
+            for edge in word_set:
+                if not s.startswith(edge, start_idx):
+                    continue
+                path.append(edge)
+                if dfs_backtrack(start_idx + len(edge), path):
+                    memo[start_idx] = True
+                    return True
+                path.pop()
+
+            memo[start_idx] = False
+            return False
+
+        return dfs_backtrack(0, [])
