@@ -108,3 +108,44 @@ class Solution:
             return False
 
         return dfs_backtrack(0, [])
+
+
+### Another BEST version using memoization:
+from typing import List
+
+class Solution:
+    def wordBreak(self, s: str, wordDict: List[str]) -> bool:
+        if not s:
+            return False
+
+        word_set = set(wordDict)
+        n = len(s)
+        memo = {}
+        res = []
+
+        def dfs_backtrack(start_idx, path):
+            #path has no use here. 
+            if start_idx == n:
+                return True
+                # joined = "".join(path)
+                # if joined == s:
+                #     res.append(joined)
+                #     return True
+                # # return 
+
+            if start_idx in memo:
+                return memo[start_idx] # memo[start_idx] = "True/False". 
+
+            for edge in word_set:
+                if not s.startswith(edge, start_idx): # this is to check if the edge is a prefix of s, which means if edge == s[start_idx:]. 
+                    continue
+                # path.append(edge)
+                if dfs_backtrack(start_idx + len(edge), path):
+                    memo[start_idx] = True # if we go through everthing and it checks out, we should update memo[start_idx] = True and return True
+                    return True
+                # path.pop()
+
+            memo[start_idx] = False
+            return False
+
+        return dfs_backtrack(0, [])
