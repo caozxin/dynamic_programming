@@ -10,33 +10,26 @@ class Solution:
         memo = {}
         target = amount
         n = len(coins)
-        # res=[]
+
         min_path = [float('inf')]
 
-        def dfs_backtrack(start_idx, path, min_path):
-            # print("path", path)
-            if sum(path) >= target:
-                # print("path", path)
-                print("     reach leaf", path)
-                if sum(path) ==  target and min_path[0] >= len(path):
+        def dfs_backtrack(start_idx, path, min_path, curr_sum):
 
+            if curr_sum >= target:
+                if curr_sum ==  target and min_path[0] >= len(path):
                     min_path[0]  = len(path)
-                    print("min_path ", min_path)
-                    # exit()
-                # res.append(path)
-
                 return min_path[0]
-
 
             for edge in coins:
                 path.append(edge)
+                curr_sum += edge
 
-                dfs_backtrack(start_idx + 1, path[:], min_path)
-                # print("path", path)
+                dfs_backtrack(start_idx + 1, path[:], min_path, sum(path[:]))
+
                 path.pop()
 
-        dfs_backtrack(0, [], min_path)
-        print(min_path)
+        dfs_backtrack(0, [], min_path, 0)
+
         if min_path[0] != float('inf'):
             return min_path[0] 
         else:
