@@ -1,3 +1,4 @@
+### my not working version:
 class Solution:
     def coinChange(self, coins: List[int], amount: int) -> int: # --> main function
         if amount == 0:
@@ -14,19 +15,33 @@ class Solution:
         min_path = [float('inf')]
 
         def dfs_backtrack(start_idx, path, min_path, curr_sum):
+            # print(path)
 
             if curr_sum >= target:
-                if curr_sum ==  target and min_path[0] >= len(path):
-                    min_path[0]  = len(path)
+                print("leaf", path)
                 return min_path[0]
 
+            if start_idx in memo:
+                print("I am here", start_idx, memo[start_idx])
+                
+                return memo[start_idx]
+
             for edge in coins:
+                if edge > target:
+                    continue
+
                 path.append(edge)
                 curr_sum += edge
 
-                dfs_backtrack(start_idx + 1, path[:], min_path, sum(path[:]))
-
+                if dfs_backtrack(start_idx + 1, path[:], min_path, sum(path[:])):
+                    if curr_sum ==  target and min_path[0] >= len(path):
+                        print("here", "min_path", min_path[0])
+                        min_path[0]  = len(path)
+                        # memo[start_idx] = min_path[0]
                 path.pop()
+
+            memo[start_idx] = min_path[0]
+
 
         dfs_backtrack(0, [], min_path, 0)
 
