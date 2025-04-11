@@ -49,3 +49,27 @@ class Solution:
             return min_path[0] 
         else:
             return -1
+### improved version using backtracking with memoization:
+class Solution:
+    def coinChange(self, coins: List[int], amount: int) -> int:
+        memo = {}
+
+        def dfs(curr_sum):
+            if curr_sum == amount:
+                return 0
+            if curr_sum > amount:
+                return float('inf')
+            if curr_sum in memo:
+                return memo[curr_sum]
+
+            min_coins = float('inf')
+            for coin in coins:
+                res = dfs(curr_sum + coin)
+                if res != float('inf'):
+                    min_coins = min(min_coins, res + 1)
+
+            memo[curr_sum] = min_coins
+            return min_coins
+
+        result = dfs(0)
+        return result if result != float('inf') else -1
